@@ -1,0 +1,25 @@
+name: Deploy RAG-Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/rag-pipeline/**'
+      - 'tools/searxng/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/openclaw
+            git pull origin main
+            /opt/rag-api-env/bin/pip install -r tools/rag-pipeline/requirements.txt
+            systemctl restart rag-api
+            echo 'Deploy successful'
