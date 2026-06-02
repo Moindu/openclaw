@@ -399,6 +399,94 @@ def index_video(path: Path, collection) -> int:
     return chunk_count
 
 
+def _ocr_image_pdf(path: Path, collection, file_hash: str) -> int:
+    """OCR an image-only / scanned PDF (no text layer) via Gemini vision.
+
+    Renders each page to an image and asks Gemini for the full content,
+    including a structured list of any colour swatches with their printed
+    name/code and a short colour description. The result is stored as
+    searchable text chunks, so an agent (e.g. the Ledertechniker) can
+    actually READ what's on the page — colour names/codes off an Avellis
+    colour card, line items off a scanned invoice — instead of only
+    matching the page visually.
+    """
+    import fitz  # PyMuPDF
+    from google import genai
+    from google.genai import types as genai_types
+
+    from config import GOOGLE_API_KEY, OCR_MODEL_COMPLEX
+
+    max_pages = 20  # cost/latency guard for large scans
+    doc = fitz.open(str(path))
+    n_pages = min(len(doc), max_pages)
+    client = genai.Client(api_key=GOOGLE_API_KEY)
+
+    prompt = (
+        "Extrahiere den VOLLSTAENDIGEN Inhalt dieser Dokumentseite. "
+        "Gib allen sichtbaren Text exakt wieder (Ueberschriften, Tabellen, "
+        "Aufzaehlungen). Falls Farbfelder oder Farbmuster abgebildet sind "
+        "(z.B. eine Leder-Farbkarte), liste JEDE Farbe einzeln auf mit ihrem "
+        "aufgedruckten Namen/Code und einer kurzen Beschreibung des sichtbaren "
+        "Farbtons (z.B. 'dunkles Cognacbraun', 'helles Sandbeige'). "
+        "Gib nur den Inhalt zurueck, keine Meta-Kommentare."
+    )
+
+    page_texts: list[str] = []
+    for i in range(n_pages):
+        try:
+            pix = doc[i].get_pixmap(matrix=fitz.Matrix(2, 2))
+            part = genai_types.Part.from_bytes(
+                data=pix.tobytes("png"), mime_type="image/png"
+            )
+            result = client.models.generate_content(
+                model=OCR_MODEL_COMPLEX,
+                contents=[part, prompt],
+                config=genai_types.GenerateContentConfig(
+                    thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
+                ),
+            )
+            txt = (result.text or "").strip()
+            if txt:
+                page_texts.append(f"[Seite {i + 1}]\n{txt}")
+        except Exception as e:  # noqa: BLE001
+            logger.warning("OCR failed for %s page %d: %s", path.name, i + 1, e)
+    doc.close()
+
+    full_text = "\n\n".join(page_texts)
+    if not full_text.strip():
+        return 0
+
+    chunks = chunk_text(full_text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP)
+    if not chunks:
+        return 0
+
+    embeddings = get_embeddings_batch(chunks)
+    doc_type = _detect_doc_type(path)
+    ids = [f"{path.stem}_{file_hash}_ocr{i}" for i in range(len(chunks))]
+    metadatas = [
+        {
+            "source": path.name,
+            "chunk_index": i,
+            "total_chunks": len(chunks),
+            "doc_type": doc_type,
+            "language": "de",
+            "chunk_type": "pdf_ocr",
+            "has_ocr": True,
+        }
+        for i in range(len(chunks))
+    ]
+    collection.upsert(
+        ids=ids, documents=chunks, embeddings=embeddings, metadatas=metadatas
+    )
+    logger.info(
+        "Image-PDF OCR %s: %d chunk(s) from %d page(s)",
+        path.name,
+        len(chunks),
+        n_pages,
+    )
+    return len(chunks)
+
+
 def index_document(path: Path, collection) -> int:
     """Parse, chunk, embed and store a single document. Returns chunk count."""
     if is_image(path):
@@ -415,24 +503,33 @@ def index_document(path: Path, collection) -> int:
 
     text = parse_document(path)
     if not text.strip():
-        # No extractable text. For image-only / scanned PDFs (e.g. colour
-        # cards, scanned invoices) the PyMuPDF text layer is empty, so the
-        # dual strategy would otherwise index 0 chunks. Fall back to the
-        # native Gemini PDF pathway, which "sees" the rendered page (layout,
-        # images, colours) and produces real embeddings.
-        if path.suffix.lower() == ".pdf" and PDF_STRATEGY == "dual":
+        # No extractable text. Image-only / scanned PDFs (Avellis colour
+        # cards, scanned invoices) have an empty PyMuPDF text layer.
+        # 1) Vision-OCR the rendered pages -> searchable text (colour
+        #    names/codes, invoice line items). This is what lets an agent
+        #    actually read the content.
+        # 2) If OCR yields nothing, fall back to the native Gemini PDF
+        #    embedding (visual match only) under the dual strategy.
+        if path.suffix.lower() == ".pdf":
             file_hash = hashlib.md5(path.read_bytes()).hexdigest()[:8]
             try:
-                native_chunks = _index_pdf_native(path, collection, file_hash)
-                if native_chunks:
-                    logger.info(
-                        "Image-only PDF %s indexed via native fallback: %d page-group(s)",
-                        path.name,
-                        native_chunks,
-                    )
-                return native_chunks
+                ocr_chunks = _ocr_image_pdf(path, collection, file_hash)
+                if ocr_chunks:
+                    return ocr_chunks
             except Exception as e:  # noqa: BLE001
-                logger.warning("Native PDF fallback failed for %s: %s", path.name, e)
+                logger.warning("Image-PDF OCR failed for %s: %s", path.name, e)
+            if PDF_STRATEGY == "dual":
+                try:
+                    native_chunks = _index_pdf_native(path, collection, file_hash)
+                    if native_chunks:
+                        logger.info(
+                            "Image-only PDF %s indexed via native fallback: %d page-group(s)",
+                            path.name,
+                            native_chunks,
+                        )
+                    return native_chunks
+                except Exception as e:  # noqa: BLE001
+                    logger.warning("Native PDF fallback failed for %s: %s", path.name, e)
         return 0
 
     chunks = chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP)
