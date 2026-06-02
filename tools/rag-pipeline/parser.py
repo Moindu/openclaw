@@ -7,6 +7,7 @@ from ebooklib import epub
 from bs4 import BeautifulSoup
 import fitz  # PyMuPDF (replaces pdfplumber - consistent with indexer.py)
 from docx import Document
+from docx.oxml.ns import qn
 
 
 VIDEO_EXTENSIONS = {".mp4", ".mov", ".webm", ".avi", ".mkv"}
@@ -60,9 +61,57 @@ def _parse_pdf(path: Path) -> str:
 
 
 def _parse_docx(path: Path) -> str:
-    """Extract text from DOCX file."""
+    """Extract text from a DOCX file.
+
+    python-docx' ``doc.paragraphs`` only yields top-level body paragraphs. It
+    silently misses text that lives in text boxes, shapes, SmartArt and
+    content controls (Structured Document Tags) — Word stores those outside
+    the plain paragraph stream. Real-world example: HISTORY_OF_LEATHER.docx
+    keeps its whole 5.5k-char article inside a content control, so the old
+    implementation returned an empty string and the file indexed as 0 chunks.
+
+    We instead walk the entire document XML tree and collect every <w:t> run,
+    inserting paragraph breaks at <w:p> boundaries and honouring <w:tab> /
+    <w:br>. This captures body text, tables, text boxes and content controls
+    in reading order.
+    """
     doc = Document(str(path))
-    return "\n\n".join(p.text for p in doc.paragraphs if p.text.strip())
+
+    out: list[str] = []
+    cur: list[str] = []
+    for node in doc.element.iter():
+        tag = node.tag
+        if tag == qn("w:t"):
+            if node.text:
+                cur.append(node.text)
+        elif tag == qn("w:tab"):
+            cur.append("\t")
+        elif tag in (qn("w:br"), qn("w:cr")):
+            cur.append("\n")
+        elif tag == qn("w:p"):
+            # Start of a new paragraph -> flush the one we just finished.
+            line = "".join(cur).strip()
+            if line:
+                out.append(line)
+            cur = []
+    line = "".join(cur).strip()
+    if line:
+        out.append(line)
+
+    text = "\n\n".join(out)
+
+    # Fallback: tables can also be picked up explicitly in case the tree walk
+    # above produced nothing for an unusual layout.
+    if not text.strip():
+        cells: list[str] = []
+        for table in doc.tables:
+            for row in table.rows:
+                row_cells = [c.text.strip() for c in row.cells if c.text.strip()]
+                if row_cells:
+                    cells.append(" | ".join(row_cells))
+        text = "\n\n".join(cells)
+
+    return text
 
 
 def _parse_csv(path: Path) -> str:

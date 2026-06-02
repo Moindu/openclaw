@@ -415,6 +415,24 @@ def index_document(path: Path, collection) -> int:
 
     text = parse_document(path)
     if not text.strip():
+        # No extractable text. For image-only / scanned PDFs (e.g. colour
+        # cards, scanned invoices) the PyMuPDF text layer is empty, so the
+        # dual strategy would otherwise index 0 chunks. Fall back to the
+        # native Gemini PDF pathway, which "sees" the rendered page (layout,
+        # images, colours) and produces real embeddings.
+        if path.suffix.lower() == ".pdf" and PDF_STRATEGY == "dual":
+            file_hash = hashlib.md5(path.read_bytes()).hexdigest()[:8]
+            try:
+                native_chunks = _index_pdf_native(path, collection, file_hash)
+                if native_chunks:
+                    logger.info(
+                        "Image-only PDF %s indexed via native fallback: %d page-group(s)",
+                        path.name,
+                        native_chunks,
+                    )
+                return native_chunks
+            except Exception as e:  # noqa: BLE001
+                logger.warning("Native PDF fallback failed for %s: %s", path.name, e)
         return 0
 
     chunks = chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP)
