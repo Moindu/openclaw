@@ -20,6 +20,14 @@ from search import (
 from websearch import format_web_results, search_web
 from status_bridge import read_status
 
+# Qdrant-based product search (new RAG pipeline)
+try:
+    from qdrant_products import search_products_qdrant
+    QDRANT_AVAILABLE = True
+except ImportError:
+    QDRANT_AVAILABLE = False
+
+
 logger = logging.getLogger(__name__)
 
 # Cache for /indexed endpoint (used by Dateimanager)
@@ -230,6 +238,25 @@ class RAGHandler(BaseHTTPRequestHandler):
                 self._send_json(400, {"error": "input_path and book_name required"})
                 return
             self._handle_process(input_path, book_name, book_year)
+            return
+
+        # Qdrant product search (new RAG pipeline)
+        if path == "/products":
+            data = json.loads(body)
+            query = data.get("query", "")
+            n_results = data.get("n_results", 10)
+            in_stock = data.get("in_stock", False)
+            if QDRANT_AVAILABLE:
+                result = search_products_qdrant(query, n_results, in_stock)
+                self._send_json(200, result)
+            else:
+                # Fallback to ChromaDB
+                results = search_products(query, n_results)
+                self._send_json(200, {
+                    "query": query,
+                    "results": results,
+                    "context": format_context(results),
+                })
             return
 
         # Default: RAG search (existing behavior)
