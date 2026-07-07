@@ -64,29 +64,39 @@ def _normalize_batch(vecs: list[list[float]]) -> list[list[float]]:
     return [_normalize(v) for v in vecs]
 
 
-def _retry_embed(func, *args, **kwargs):
-    """Retry wrapper with exponential backoff for rate limit errors."""
-    for attempt in range(MAX_RETRIES):
+def _retry_embed(func, *args, max_retries=None, base_delay=None, **kwargs):
+    """Retry wrapper with exponential backoff for rate limit errors.
+
+    max_retries/base_delay override the module defaults. Interactive
+    query paths pass a small budget so the search can degrade to the
+    BM25 fallback within seconds instead of blocking for minutes.
+    """
+    retries = MAX_RETRIES if max_retries is None else max_retries
+    delay_base = RETRY_BASE_DELAY if base_delay is None else base_delay
+    for attempt in range(retries):
         try:
             return func(*args, **kwargs)
         except Exception as e:
             error_str = str(e)
             if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
-                delay = RETRY_BASE_DELAY * (2 ** attempt)
-                logger.warning("Rate limit hit, retrying in %ds (attempt %d/%d)", delay, attempt + 1, MAX_RETRIES)
+                delay = delay_base * (2 ** attempt)
+                logger.warning("Rate limit hit, retrying in %ds (attempt %d/%d)", delay, attempt + 1, retries)
                 time.sleep(delay)
             else:
                 raise
-    raise Exception(f"Failed after {MAX_RETRIES} retries (RESOURCE_EXHAUSTED / 429 rate limit)")
+    raise Exception(f"Failed after {retries} retries (RESOURCE_EXHAUSTED / 429 rate limit)")
 
 
-def get_embedding(text: str, task_type: str = "QUESTION_ANSWERING") -> list[float]:
+def get_embedding(
+    text: str, task_type: str = "QUESTION_ANSWERING", max_retries: int | None = None,
+) -> list[float]:
     """Generate embedding for a single text using Gemini.
 
     Default task_type is QUESTION_ANSWERING (optimized for chatbot queries
     finding answer-containing documents - pair with RETRIEVAL_DOCUMENT).
 
     For general keyword search, use task_type="RETRIEVAL_QUERY".
+    max_retries: small values make query paths fail fast (BM25 fallback).
     """
     client = _get_client()
 
@@ -100,7 +110,10 @@ def get_embedding(text: str, task_type: str = "QUESTION_ANSWERING") -> list[floa
             ),
         )
 
-    result = _retry_embed(_embed)
+    result = _retry_embed(
+        _embed, max_retries=max_retries,
+        base_delay=None if max_retries is None else 3,
+    )
     return _normalize(result.embeddings[0].values)
 
 

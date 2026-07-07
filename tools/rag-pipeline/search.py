@@ -261,7 +261,7 @@ def search_collection(
     client = get_chroma_client()
     collection = get_or_create_collection(client, collection_name)
     if query_embedding is None:
-        query_embedding = get_embedding(query, task_type=_detect_task_type(query))
+        query_embedding = get_embedding(query, task_type=_detect_task_type(query), max_retries=2)
 
     fetch_n = n_results * 3 if diverse else max(n_results * 5, 50)
 
@@ -335,7 +335,7 @@ def search_all(
 ) -> list[dict]:
     """Search both knowledge and products, merge by relevance."""
     # Generate embedding once and reuse for both collections
-    shared_embedding = get_embedding(query, task_type=_detect_task_type(query))
+    shared_embedding = get_embedding(query, task_type=_detect_task_type(query), max_retries=2)
     knowledge = search_collection(
         query, COLLECTION_KNOWLEDGE, n_results,
         max_distance=max_distance, diverse=diverse, max_per_source=max_per_source,
@@ -380,7 +380,7 @@ def search_recipes(
     """
     client = get_chroma_client()
     collection = get_or_create_collection(client, COLLECTION_RECIPES)
-    query_embedding = get_embedding(query, task_type=_detect_task_type(query))
+    query_embedding = get_embedding(query, task_type=_detect_task_type(query), max_retries=2)
     return _query_collection(collection, query_embedding, n_results, where=filters, max_distance=max_distance)
 
 
