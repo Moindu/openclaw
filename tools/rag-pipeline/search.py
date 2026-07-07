@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from config import COLLECTION_KNOWLEDGE, COLLECTION_PRODUCTS, COLLECTION_RECIPES
+import bm25_fallback
 from embeddings import get_embedding, get_image_embedding
 from indexer import get_chroma_client, get_or_create_collection
 
@@ -172,21 +173,88 @@ def _filename_search(collection, query, query_embedding, n_results=5):
     return items[:n_results]
 
 
+# --- Hybrid search: weighted Reciprocal Rank Fusion ---
+#
+# Four ranked lists are fused: vector similarity, BM25 keyword ranking,
+# filename matches and cross-modal image results. RRF replaces the old
+# ad-hoc distance scaling (x0.5 for images/filename hits): ranking comes
+# from fused rank positions, while `distance` keeps its meaning as the
+# true cosine distance (BM25-only hits get theirs computed on the fly).
+RRF_K = 60
+WEIGHT_VECTOR = 1.0
+WEIGHT_BM25 = 0.7
+WEIGHT_FILENAME = 0.5
+WEIGHT_IMAGE = 0.4
+
+
+def _result_key(item: dict) -> str:
+    meta = item.get("metadata", {})
+    return item["source"] + "_" + str(meta.get("chunk_index", meta.get("page_start", "")))
+
+
+def _rrf_fuse(ranked_lists: list[tuple[float, list[dict]]], k: int = RRF_K) -> list[dict]:
+    """Weighted Reciprocal Rank Fusion over multiple ranked lists.
+
+    ranked_lists: [(weight, items_best_first), ...]. Deduplicates by
+    source+chunk position; returns items sorted by fused score."""
+    scores: dict[str, float] = {}
+    best: dict[str, dict] = {}
+    for weight, items in ranked_lists:
+        for rank, item in enumerate(items, 1):
+            key = _result_key(item)
+            scores[key] = scores.get(key, 0.0) + weight / (k + rank)
+            prev = best.get(key)
+            if prev is None or item["distance"] < prev["distance"]:
+                best[key] = item
+    fused = []
+    for key, score in sorted(scores.items(), key=lambda kv: kv[1], reverse=True):
+        item = best[key]
+        item["metadata"]["_rrf_score"] = round(score, 5)
+        fused.append(item)
+    return fused
+
+
+def _attach_true_distances(collection, items: list[dict], query_embedding: list[float]) -> None:
+    """Replace BM25 pseudo-distances with real cosine distances by
+    fetching the stored embeddings of the hit chunks."""
+    import numpy as np
+
+    ids = [it["chunk_id"] for it in items if it.get("chunk_id")]
+    if not ids:
+        return
+    try:
+        got = collection.get(ids=ids, include=["embeddings"])
+    except Exception:
+        return
+    emb_by_id = dict(zip(got.get("ids", []), got.get("embeddings", [])))
+    q = np.array(query_embedding)
+    qn = np.linalg.norm(q)
+    if qn == 0:
+        return
+    for it in items:
+        emb = emb_by_id.get(it.get("chunk_id"))
+        if emb is None:
+            continue
+        e = np.array(emb)
+        en = np.linalg.norm(e)
+        if en > 0:
+            it["distance"] = round(1.0 - float(np.dot(e, q) / (en * qn)), 4)
+
+
 def search_collection(
     query: str, collection_name: str, n_results: int = 5,
     max_distance: float | None = None, diverse: bool = False,
     max_per_source: int = 2, query_embedding: list[float] | None = None,
 ) -> list[dict]:
-    """Search a single ChromaDB collection by text query.
+    """Hybrid search over a single ChromaDB collection.
 
-    Automatically includes image results with cross-modal distance adjustment.
-    Image embeddings are in the same vector space but have systematically higher
-    distances to text queries (~0.55-0.65 vs ~0.30-0.40 for text-text).
-    We compensate by searching images separately and scaling their distances.
+    Vector similarity and BM25 keyword ranking are fused via weighted
+    RRF, together with filename matches (HNSW-miss fallback) and
+    cross-modal image results.
 
     Args:
-        diverse: If True, fetch 3x more results and diversify across sources,
-            limiting each source to max_per_source chunks.
+        diverse: If True, diversify across sources, limiting each source
+            to max_per_source chunks.
         max_per_source: Max chunks per source document (only with diverse=True).
         query_embedding: Pre-computed embedding vector. If None, will be generated.
     """
@@ -197,58 +265,46 @@ def search_collection(
 
     fetch_n = n_results * 3 if diverse else max(n_results * 5, 50)
 
-    # Search text results (exclude images to avoid them being pushed out)
+    # List 1: vector similarity (text chunks only)
     text_items = _query_collection(
         collection, query_embedding, fetch_n,
         where={"chunk_type": {"$ne": "image"}},
-        max_distance=max_distance,
     )
 
-    # Search image results separately with cross-modal distance scaling
-    # Images are scaled to be comparable with text distances
-    IMAGE_DISTANCE_SCALE = 0.5  # Multiply image distances to compensate cross-modal gap
+    # List 2: BM25 keyword ranking (never blocks; empty while index builds)
+    bm25_items = bm25_fallback.search(
+        query, collection_name, fetch_n, mark_degraded=False, wait=False,
+    )
+    _attach_true_distances(collection, bm25_items, query_embedding)
+
+    # List 3: filename matches (catches docs HNSW approximate search misses)
+    query_words = [w.lower() for w in query.split() if len(w) >= 3]
+    filename_items = [
+        it for it in _filename_search(collection, query, query_embedding, n_results)
+        if any(w in it["source"].lower() for w in query_words)
+    ]
+
+    # List 4: cross-modal image results
     image_items = _query_collection(
         collection, query_embedding, max(3, n_results),
         where={"chunk_type": "image"},
     )
     for item in image_items:
-        item["distance"] = item["distance"] * IMAGE_DISTANCE_SCALE
-        item["metadata"]["_distance_scaled"] = True
+        item["metadata"]["_image_result"] = True
 
-    # Filename-based search: catch documents that HNSW approximate search misses
-    filename_items = _filename_search(collection, query, query_embedding, n_results)
+    fused = _rrf_fuse([
+        (WEIGHT_VECTOR, text_items),
+        (WEIGHT_BM25, bm25_items),
+        (WEIGHT_FILENAME, filename_items),
+        (WEIGHT_IMAGE, image_items),
+    ])
 
-    # Merge all results, deduplicating by source+chunk_index
-    seen = set()
-    for item in text_items:
-        key = item["source"] + "_" + str(item["metadata"].get("chunk_index", item["metadata"].get("page_start", "")))
-        seen.add(key)
-
-    # Filename matches get a distance bonus: if the source filename contains
-    # query words, the document is highly likely relevant even if the vector
-    # distance is moderate (e.g. table-heavy PDFs with sparse text)
-    FILENAME_MATCH_SCALE = 0.5
-    for item in filename_items:
-        key = item["source"] + "_" + str(item["metadata"].get("chunk_index", item["metadata"].get("page_start", "")))
-        if key not in seen:
-            source_lower = item["source"].lower()
-            query_words = [w.lower() for w in query.split() if len(w) >= 3]
-            if any(w in source_lower for w in query_words):
-                item["distance"] = item["distance"] * FILENAME_MATCH_SCALE
-                item["metadata"]["_filename_boosted"] = True
-            text_items.append(item)
-            seen.add(key)
-
-    items = text_items + image_items
-    items.sort(key=lambda x: x["distance"])
-
-    # Apply max_distance filter after scaling
     if max_distance is not None:
-        items = [i for i in items if i["distance"] <= max_distance]
+        fused = [i for i in fused if i["distance"] <= max_distance]
 
     if diverse:
-        return _diversify_results(items, n_results, max_per_source)
-    return items[:n_results]
+        return _diversify_results(fused, n_results, max_per_source)
+    return fused[:n_results]
 
 
 def search_knowledge(
@@ -292,7 +348,9 @@ def search_all(
     )
 
     combined = knowledge + products
-    combined.sort(key=lambda x: x["distance"])
+    # Both lists are RRF-ordered; merge by fused score so BM25-only hits
+    # (worse cosine distance, better rank) keep their position.
+    combined.sort(key=lambda x: -x["metadata"].get("_rrf_score", 0.0))
 
     if diverse:
         return _diversify_results(combined, n_results, max_per_source)

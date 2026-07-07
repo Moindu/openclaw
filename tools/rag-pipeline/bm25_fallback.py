@@ -1,9 +1,14 @@
-"""BM25 keyword-search fallback for the RAG pipeline.
+"""BM25 keyword search over the ChromaDB chunks.
 
-When the embedding API (Gemini) is unavailable, search degrades to a pure
-keyword ranking over the ChromaDB chunks instead of failing. The index
-lives in RAM and is rebuilt in the background whenever the collection's
-chunk count changes; queries are served from the stale index meanwhile.
+Two consumers:
+- Hybrid search (search.py): BM25 as one ranked list in the RRF fusion
+  (mark_degraded=False, wait=False - never block a live query).
+- Degraded mode (server.py): if the embedding API is down, search falls
+  back to BM25-only results (mark_degraded=True, wait=True).
+
+The index lives in RAM and is rebuilt in the background whenever the
+collection's chunk count changes; queries are served from the stale
+index meanwhile.
 """
 import logging
 import re
@@ -34,6 +39,7 @@ def _build(collection_name: str) -> dict:
     client = get_chroma_client()
     collection = get_or_create_collection(client, collection_name)
     total = collection.count()
+    ids: list[str] = []
     docs: list[str] = []
     metas: list[dict] = []
     offset = 0
@@ -44,11 +50,15 @@ def _build(collection_name: str) -> dict:
         got = batch.get("documents") or []
         if not got:
             break
+        ids.extend(batch.get("ids") or [""] * len(got))
         docs.extend(got)
         metas.extend(batch.get("metadatas") or [{}] * len(got))
         offset += len(got)
 
-    index = {"bm25": None, "docs": docs, "metas": metas, "count": total, "built_at": time.time()}
+    index = {
+        "bm25": None, "ids": ids, "docs": docs, "metas": metas,
+        "count": total, "built_at": time.time(),
+    }
     if docs:
         t0 = time.time()
         index["bm25"] = BM25Okapi([_tokenize(d) for d in docs])
@@ -99,11 +109,17 @@ def _get_or_wait_for_index(collection_name: str) -> dict | None:
         time.sleep(0.5)
 
 
-def search(query: str, collection_name: str = COLLECTION_KNOWLEDGE, n_results: int = 5) -> list[dict]:
+def search(
+    query: str, collection_name: str = COLLECTION_KNOWLEDGE, n_results: int = 5,
+    mark_degraded: bool = True, wait: bool = True,
+) -> list[dict]:
     """Keyword search returning results in the vector-search shape
-    (text/source/metadata/distance). Distance is a pseudo-distance
-    derived from the BM25 score (lower = better) so existing consumers
-    can sort/display it unchanged."""
+    (text/source/metadata/distance + chunk_id). Distance is a
+    pseudo-distance derived from the BM25 score (lower = better);
+    the hybrid layer replaces it with the true cosine distance.
+
+    wait=False never blocks: if the index is still building, it returns
+    [] and the caller proceeds without the BM25 list."""
     # Trigger a background rebuild if the collection changed since the
     # index was built; the stale index keeps serving in the meantime.
     try:
@@ -116,7 +132,11 @@ def search(query: str, collection_name: str = COLLECTION_KNOWLEDGE, n_results: i
     except Exception:
         logger.exception("BM25 count check failed for %s", collection_name)
 
-    index = _get_or_wait_for_index(collection_name)
+    if wait:
+        index = _get_or_wait_for_index(collection_name)
+    else:
+        with _lock:
+            index = _indexes.get(collection_name)
     if index is None or index["bm25"] is None:
         return []
 
@@ -132,12 +152,14 @@ def search(query: str, collection_name: str = COLLECTION_KNOWLEDGE, n_results: i
         if score <= 0:
             break
         meta = dict(index["metas"][i] or {})
-        meta["_degraded"] = True
         meta["_bm25_score"] = round(score, 3)
+        if mark_degraded:
+            meta["_degraded"] = True
         items.append({
             "text": index["docs"][i],
             "source": meta.get("source", meta.get("book_title", "unknown")),
             "metadata": meta,
             "distance": round(1.0 / (1.0 + score), 4),
+            "chunk_id": index["ids"][i],
         })
     return items
