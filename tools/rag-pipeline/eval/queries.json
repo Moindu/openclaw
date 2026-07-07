@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "question": "Worauf sollte bei der Lagerung von OPTIMALIN OLI geachtet werden, um eine gleichbleibende Qualität vor der Verarbeitung sicherzustellen?",
+    "expected_source": "1_L_L_DE_4442_00_1_140-1.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 2,
+    "question": "Wie muss PROVOL 100 vorbereitet werden, um es korrekt in Wasser zu lösen?",
+    "expected_source": "1_L_L_DE_2053_00_1_200-7.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 3,
+    "question": "Warum erreichen Gerbverfahren auf Basis von Zink oder Titan in der Regel keine so hohe thermische Beständigkeit wie klassische Methoden?",
+    "expected_source": "Current_trends_in_leather_science.pdf",
+    "chunk_preview": "reported using laponite clay as fect on detanning over time, whether or not stably com- themineralcomponent[37,38]. plexed withfor example gluconate [29]. Zinc (II) tanning is newer. Its toxicity notw",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 4,
+    "question": "Welches Datum ist bei der Rechnungsstellung durch die Gebr. Kobel GmbH als Leistungszeitpunkt anzusetzen?",
+    "expected_source": "ASL - G.Kobel - invoice R20260096.pdf",
+    "chunk_preview": "[Seite 1] Rechnungsdatum entspricht Leistungsdatum GEBR. KOBEL GMBH LEDERFABRIK POSTFACH 1144 25542 KELLINGHUSEN : DE113879330 : 40228903520 USt.-Id.Nr. Steuer-Nr. Rechnung Daimlerring 11 65205 Wiesba",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 5,
+    "question": "Unter welcher Zolltarifnummer wird das Produkt Avacor dunkelbraun für den Versand deklariert?",
+    "expected_source": "ASL - G.Kobel - delivery note L20260013.pdf",
+    "chunk_preview": "[Seite 1] Pos Produktnummer Gebinde Menge / Gebinde Produktbezeichnung Lieferschein GEBR. KOBEL GMBH LEDERFABRIK HAUPTSTR. 42 D 25548 KELLINGHUSEN Deutschland 6516010025 V2010.09.06 Kunden-Nr. Transpo",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 6,
+    "question": "In welchen Phasen der Lederherstellung lässt sich das Hilfsmittel NOVALTAN DPA einsetzen, um eine dispergierende Wirkung zu erzielen?",
+    "expected_source": "1_L_L_DE_4849_00_1_120.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 7,
+    "question": "Welche Maßnahmen müssen bei der Lagerung von CONTRIPON ODN beachtet werden, um eine gleichbleibende Produktqualität vor der Verarbeitung sicherzustellen?",
+    "expected_source": "1_L_L_DE_4413_20_1_260-1.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 8,
+    "question": "Wie hat sich die Effizienz bei der Aufbereitung von Salpeter für die Pulverherstellung durch neue technische Verfahren im Vergleich zu früheren Methoden verändert?",
+    "expected_source": "rapportfaitaunom00four.pdf",
+    "chunk_preview": "méthode ae feparét du nkre\nles matières\nétrangères\nqui\nJ altèrent aans\nle produit des premières\ncuites\nSe de 'la\nrendre par- la propre\nà k fabrication de\nla poudre. Bien-\ntôt un raAnage prompt & vraim",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 9,
+    "question": "Wie lässt sich das Produkt PELLASTOL SFL fachgerecht in Wasser lösen, um eine stabile Emulsion für die Lederbearbeitung zu erhalten?",
+    "expected_source": "1_L_L_DE_4112_00_1_160-6.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 10,
+    "question": "Welchen Einfluss hat die spezifische Abfolge der Aminosäuren auf die verschiedenen Prozesse bei der Herstellung von Leder aus Tierhäuten?",
+    "expected_source": "Tanning_Chemistry_The_Science_of_Leather.pdf",
+    "chunk_preview": "level of protein hierarchy and refers to the sequence of amino acids (also called residues) in the polypeptide chain. It is held together solely by peptide bonds (as described in Section 1.1) that are",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 11,
+    "question": "Welche Maßnahmen bei der Lagerung sind notwendig, um die Bildung von Ablagerungen in NOVALTAN AG zu verhindern und die Haltbarkeit des Gerbstoffs zu gewährleisten?",
+    "expected_source": "1_L_L_DE_2426_20_1_120.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 12,
+    "question": "An wen kann ich mich wenden, wenn ich technische Informationen oder Unterstützung zu dem hydrophobierenden Fettungsmittel Ombrellon WP benötige?",
+    "expected_source": "1_L_L_DE_2293_80_1_170.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 13,
+    "question": "Welche Eigenschaften weist das Mittel Supralan TY bei der Reinigung und Aufbereitung von Rohhäuten auf und worauf sollte bei der Lagerung des Produkts geachtet werden?",
+    "expected_source": "1_L_L_DE_4218_00_1_110.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 14,
+    "question": "An wen kann ich mich bei der Gebr. Kobel GmbH wenden, wenn ich Rückfragen zu einer aktuellen Warenlieferung habe?",
+    "expected_source": "ASL - G.Kobel - delivery note L20240406.pdf",
+    "chunk_preview": "Pos Produktnummer\nGebinde\nMenge / Gebinde  \nProduktbezeichnung\nLieferschein\nGEBR. KOBEL GMBH\nLEDERFABRIK\nHAUPTSTR. 42\nD 25548 KELLINGHUSEN\nDeutschland\n6516010025 V2010.09.06\nKunden-Nr.\nTransport\nIhre ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 15,
+    "question": "Welche Lieferbedingungen gelten für den Versand der Lederwaren von Avellis Synco Leather an die Gebr. Kobel GmbH?",
+    "expected_source": "ASL - G.Kobel - invoice R20220338.pdf",
+    "chunk_preview": "[Seite 1] Industriegebiet Nordenstadt Daimlerring 11 65205 Wiesbaden Telefon: +49 6122 911970 Telefax: +49 6122 911979 Umsatz-ID-Nr.: DE 11 38 79 330 Steuer-Nr.: 040 228 903 52 Avellis Synco Leather G",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 16,
+    "question": "Wie kann man die natürliche Härte von eisengegerbtem Leder durch eine Nachbehandlung geschmeidiger machen?",
+    "expected_source": "irontannage00hout.pdf",
+    "chunk_preview": "of from 15° to 20° Bk. Drum for i^ to 2 hours. This generally gives a gray- ish black color. To obtain a deeper black color, top the leather with I per cent, basic leather black in the usual manner. T",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 17,
+    "question": "Welches Mittel eignet sich für eine umweltfreundliche und effiziente Entfettung von Rohhäuten mit hohem Eigenfettgehalt, ohne dass dabei zusätzliche organische Lösungsmittel benötigt werden?",
+    "expected_source": "1_L_L_DE_2209_10_1_110.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 20,
+    "question": "Welche Verfahren oder Methoden existieren, um bei der Lederherstellung anfallenden Klärschlamm sicher zu verfestigen oder zu stabilisieren?",
+    "expected_source": "Sustainable_use_of_tannery_sludge_in_bri.pdf",
+    "chunk_preview": "Singh, K.P., Mohan, D., Sinha, S., Dalwani, R., 2004. Impact assessment of treated/\nuntreated wastewater toxicants discharged by sewage treatment plants on\nhealth, agricultural, and environmental qual",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 21,
+    "question": "Unter welcher Anschrift ist die Synco Leather GmbH in Wiesbaden für geschäftliche Korrespondenz oder Lieferungen erreichbar?",
+    "expected_source": "ASL - G.Kobel - delivery note L20250287.pdf",
+    "chunk_preview": "[Seite 1] Pos Produktnummer Gebinde Menge / Gebinde Produktbezeichnung Lieferschein GEBR. KOBEL GMBH LEDERFABRIK HAUPTSTR. 42 D 25548 KELLINGHUSEN Deutschland 6516010025 V2010.09.06 Kunden-Nr. Transpo",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 22,
+    "question": "Wie lässt sich der fortschreitende Zerfall von historischem Leder, das durch Säureeinwirkung geschädigt wurde, wirksam aufhalten und langfristig konservieren?",
+    "expected_source": "Use_of_aluminium_alkoxide_and_oxazolidin.pdf",
+    "chunk_preview": "samples treated with Cellugel®, aluminium alkoxide and the new formulation along with corresponding untreated leather samples were also subjected to accelerate ageing in order to investigate the longe",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 23,
+    "question": "Anhand welcher spezifischen Merkmale lässt sich archäologisch feststellen, ob an einem Fundort früher eine Werkstatt für die Verarbeitung von Bein oder Geweih existiert hat?",
+    "expected_source": "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf",
+    "chunk_preview": "lässt. rungen bei der Herstellung erforderte, ist es wahrschein- Abfallstücke und Halbfabrikate sind häufi g nur für ein lich, dass der Bronzegiesser selbst das ihm gelieferte geschultes Auge von den ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 24,
+    "question": "Waren bei antiken Ledersandalen die verwendeten Einfassungen der Ränder farblich immer vom restlichen Material abgesetzt oder kamen auch einfarbige Varianten vor?",
+    "expected_source": "12_Veldmeijer_JARCE45_pdf.pdf",
+    "chunk_preview": "21Angelo Sesana, “Preliminary Report of the Seventh Italian Archaeological Mission-Temple of Amenhotep II at Western Thebes–Winter 2004/2005,” Memnonia 16 (2005), 219–21, pls. 30–32, esp. 221. 22Refer",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 25,
+    "question": "Welche Besonderheiten bei der Lagerung und Vorbereitung müssen bei der Verwendung von CUIROL LC beachtet werden, um eine optimale Produktqualität zu gewährleisten?",
+    "expected_source": "1_L_L_DE_5234_00_1_180-1.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 26,
+    "question": "Auf welche Weise bewirkt Glutardialdehyd (GTA) eine Vernetzung der Kollagenmoleküle innerhalb des Leders?",
+    "expected_source": "Influence_of_crosslinkers_and_crosslinki.pdf",
+    "chunk_preview": "and essentially irreversi- ble; GTA introduces crosslinks through Schiff’s bases.10 Olde-Damink21 (1995) explains the crosslink- Methods ing of collagen with GTA through the reaction of the Gelatin ex",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 27,
+    "question": "Worauf sollte man bei der Auswahl eines Nachgerbstoffs achten, wenn man bei der Lederherstellung vollständig auf Bisphenole verzichten möchte?",
+    "expected_source": "1_L_L_DE_5176_00_1_120.pdf",
+    "chunk_preview": "Zschimmer & Schwarz\nGmbH & Co KG Chemische Fabriken\nMax-Schwarz-Straße 3–5\n56112 Lahnstein | DE\nleder@zschimmer-schwarz.com\nzschimmer-schwarz.com\nT +49 2621 12-173  \nF +49 2621 12-526\nLEATHER \nAUXILIA",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 28,
+    "question": "Wie hoch ist das Gesamtgewicht der gelieferten Farbstoffe in der aktuellen Sendung?",
+    "expected_source": "ASL - G.Kobel - delivery note L20230227.pdf",
+    "chunk_preview": "Pos Produktnummer \nGebinde \nMenge / Gebinde   \nProduktbezeichnung \n  \n11 \n60700 \n \n50,00 KG \n \nAVACOR SCHWARZ FTW \n \n  2x 25,00 KG \n60700 / MA20226151 \nNr.:  202217058\n - 202217059\n22 \n63021 \n \n30,00 ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 29,
+    "question": "Warum unterschätzten die etablierten Unternehmen der Natureisindustrie die aufkommenden technischen Innovationen zur künstlichen Eiserzeugung?",
+    "expected_source": "In_the_beginning_was_the_network.pdf",
+    "chunk_preview": "upon them. A Complexity of Cool Networks. Utterback’s study of the ice industry was based on his interest in technical innovation, and in particular its “impact on competitive success”. He remains fas",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 30,
+    "question": "Welche drei zentralen Kriterien müssen bei einer verantwortungsbewussten Unternehmensführung im Hinblick auf den Ressourcenverbrauch berücksichtigt werden?",
+    "expected_source": "Nachhaltigkeitsmanagement_uber_Werktore.pdf",
+    "chunk_preview": "Selbstverständnis: Werte schaffen und \nnachhaltiges Ressourcenmanagement.\n61\n\nÖkonomische Effizienzüberlegungen haben wir im Blick; zugleich aber auch die\nSachgemäßheit beim Einsatz der Ressourcen so",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 31,
+    "question": "Welche chemischen Substanzen müssen bei der Verarbeitung von CUIROL S-LL vermieden werden, da das Fettungsmittel gegenüber diesen nicht beständig ist?",
+    "expected_source": "1_L_L_DE_4246_90_2_180.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 32,
+    "question": "Welche Informationen lassen sich aus archäologischen Kleinfunden von Lederstücken für die historische Forschung gewinnen?",
+    "expected_source": "Leather_Military_Garments_and_other_leat.pdf",
+    "chunk_preview": "152\n\nColofon\n\nPreface\n\nInhoudsopgave \nPreface \n3 \n1 Some reflections on the development of early medieval footwear on Polish \nPomerania \n7 \nAnna Kowalska \n \n2 Leervondsten uit het kasteel van Middelbu",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 33,
+    "question": "Welche Faktoren beeinflussen das Flächenergebnis bei der Herstellung von weichem Bekleidungsleder während des Trocknungsprozesses?",
+    "expected_source": "Investigating_the_cell_rotary_conditioni.pdf",
+    "chunk_preview": "relation to skin and animal 305-325. 1990. characteristics. J. Soc. Leath.Tech.Ch., 73, 55-60. 1994. 55. H aines, B.M.; Criteria for the estimation of yield of leather 44. Heidemann, E.; Fundamentals ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 34,
+    "question": "Warum bevorzugen Gerbereien bei der Beschaffung von Sumach für die Lederherstellung den Import aus Sizilien gegenüber heimischen Produkten?",
+    "expected_source": "CAT87211157.pdf",
+    "chunk_preview": "need mainly by importing, from Sicily, leafmaterialofthesumacspeciesRhuscoriaria. TheSicilianproduct hasagreatertannincontent, ismore uniforminquality, andhencegenerally gives better results than suma",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 35,
+    "question": "Welche chemischen Substanzen oder Hilfsmittel können die Wirksamkeit von Pellamin CL bei der Lederfettung negativ beeinflussen?",
+    "expected_source": "1_L_L_DE_2555_00_1_220-4.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 36,
+    "question": "Welche archäologischen Funde aus der Basler Ausgrabung der 1930er Jahre sind für die Lederforschung von besonderer Bedeutung?",
+    "expected_source": "Zwischen_Birsig_und_Petersberg.pdf",
+    "chunk_preview": "Grabung durch Gelder des Basler Arbeits- Funde der Altgrabung im Historischen Museum Basel rappen, einer staatlichen Arbeitsbeschaffungsmaßnahme im Nachgang und im Naturhistorischen Museum Basel aufbe",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 39,
+    "question": "Über welche fachliche Qualifikation und wissenschaftlichen Schwerpunkte sollte ein Experte für die Konservierung historischer Artefakte und Materialien typischerweise verfügen?",
+    "expected_source": "Microscopic_observations_to_track_the_be.pdf",
+    "chunk_preview": "an Andrew W. Mellon Fellow in the Advanced Art, the Smithsonian Institution’s National Museum of the Residency Program in Photograph Conservation (2005–2007) American Indian in Washington, DC, the Ari",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  },
+  {
+    "id": 40,
+    "question": "Mit welchen Gerbstoffen oder chemischen Zusätzen ist der Polymergerbstoff NOVALTAN MSA nicht kompatibel?",
+    "expected_source": "1_L_L_DE_3911_00_1_120.pdf",
+    "chunk_preview": "[Seite 1] Zschimmer & Schwarz GmbH & Co KG Chemische Fabriken Max-Schwarz-Straße 3–5 56112 Lahnstein | DE leder@zschimmer-schwarz.com zschimmer-schwarz.com T +49 2621 12-173 F +49 2621 12-526 LEATHER ",
+    "generator_model": "gemini-3.1-flash-lite-preview"
+  }
+]
