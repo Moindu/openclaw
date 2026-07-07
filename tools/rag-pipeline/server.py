@@ -20,6 +20,7 @@ from search import (
 from websearch import format_web_results, search_web
 from status_bridge import read_status
 import bm25_fallback
+from rerank import rerank, RERANK_CANDIDATES, RERANK_ENABLED
 from config import COLLECTION_KNOWLEDGE, COLLECTION_PRODUCTS, COLLECTION_RECIPES
 
 # Qdrant-based product search (new RAG pipeline)
@@ -299,17 +300,20 @@ class RAGHandler(BaseHTTPRequestHandler):
         max_distance = data.get("max_distance")
 
         degraded = False
+        # With reranking on, fetch a larger candidate pool; the reranker
+        # cuts it back down to n_results.
+        fetch_n = max(n_results, RERANK_CANDIDATES) if RERANK_ENABLED else n_results
         try:
             if collection == "products":
-                results = search_products(query, n_results, max_distance=max_distance,
+                results = search_products(query, fetch_n, max_distance=max_distance,
                                           diverse=diverse, max_per_source=max_per_source)
             elif collection == "knowledge":
-                results = search_knowledge(query, n_results, max_distance=max_distance,
+                results = search_knowledge(query, fetch_n, max_distance=max_distance,
                                            diverse=diverse, max_per_source=max_per_source)
             elif collection == "recipes":
-                results = search_recipes(query, n_results, max_distance=max_distance)
+                results = search_recipes(query, fetch_n, max_distance=max_distance)
             else:
-                results = search_all(query, n_results, max_distance=max_distance,
+                results = search_all(query, fetch_n, max_distance=max_distance,
                                      diverse=diverse, max_per_source=max_per_source)
         except Exception:
             # Embedding API (or the vector query path) unavailable: degrade to
@@ -319,6 +323,11 @@ class RAGHandler(BaseHTTPRequestHandler):
             fb_collection = fallback_map.get(collection, COLLECTION_KNOWLEDGE)
             results = bm25_fallback.search(query, fb_collection, n_results)
             degraded = True
+
+        if degraded:
+            results = results[:n_results]
+        else:
+            results = rerank(query, results, n_results)
 
         unique_sources = len(set(r["source"] for r in results))
         payload = {
