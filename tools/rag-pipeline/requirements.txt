@@ -14,3 +14,4 @@ pdf2image>=1.17.0
 PyMuPDF>=1.24.0
 imagehash>=4.3.0
 ffmpeg-python>=0.2.0
+rank-bm25

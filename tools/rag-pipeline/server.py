@@ -19,6 +19,8 @@ from search import (
 )
 from websearch import format_web_results, search_web
 from status_bridge import read_status
+import bm25_fallback
+from config import COLLECTION_KNOWLEDGE, COLLECTION_PRODUCTS, COLLECTION_RECIPES
 
 # Qdrant-based product search (new RAG pipeline)
 try:
@@ -136,6 +138,33 @@ class RAGHandler(BaseHTTPRequestHandler):
     """Handle RAG search, pipeline, and file manager requests."""
 
     def do_GET(self):
+        try:
+            self._route_get()
+        except BrokenPipeError:
+            pass
+        except Exception as e:
+            logger.exception("Unhandled error in GET %s", self.path)
+            self._safe_send_error(500, str(e))
+
+    def do_POST(self):
+        try:
+            self._route_post()
+        except BrokenPipeError:
+            pass
+        except json.JSONDecodeError as e:
+            self._safe_send_error(400, f"Invalid JSON body: {e}")
+        except Exception as e:
+            logger.exception("Unhandled error in POST %s", self.path)
+            self._safe_send_error(500, str(e))
+
+    def _safe_send_error(self, status: int, message: str):
+        """Best-effort JSON error response (never raise from here)."""
+        try:
+            self._send_json(status, {"error": message, "results": [], "context": ""})
+        except Exception:
+            pass
+
+    def _route_get(self):
         path = self.path.rstrip("/")
 
         if path == "/indexed":
@@ -149,7 +178,7 @@ class RAGHandler(BaseHTTPRequestHandler):
         self.send_response(404)
         self.end_headers()
 
-    def do_POST(self):
+    def _route_post(self):
         path = self.path.rstrip("/")
 
         # Upload must be handled BEFORE reading body (needs raw rfile for multipart)
@@ -269,26 +298,41 @@ class RAGHandler(BaseHTTPRequestHandler):
 
         max_distance = data.get("max_distance")
 
-        if collection == "products":
-            results = search_products(query, n_results, max_distance=max_distance,
-                                      diverse=diverse, max_per_source=max_per_source)
-        elif collection == "knowledge":
-            results = search_knowledge(query, n_results, max_distance=max_distance,
-                                       diverse=diverse, max_per_source=max_per_source)
-        elif collection == "recipes":
-            results = search_recipes(query, n_results, max_distance=max_distance)
-        else:
-            results = search_all(query, n_results, max_distance=max_distance,
-                                 diverse=diverse, max_per_source=max_per_source)
+        degraded = False
+        try:
+            if collection == "products":
+                results = search_products(query, n_results, max_distance=max_distance,
+                                          diverse=diverse, max_per_source=max_per_source)
+            elif collection == "knowledge":
+                results = search_knowledge(query, n_results, max_distance=max_distance,
+                                           diverse=diverse, max_per_source=max_per_source)
+            elif collection == "recipes":
+                results = search_recipes(query, n_results, max_distance=max_distance)
+            else:
+                results = search_all(query, n_results, max_distance=max_distance,
+                                     diverse=diverse, max_per_source=max_per_source)
+        except Exception:
+            # Embedding API (or the vector query path) unavailable: degrade to
+            # BM25 keyword search instead of failing the request.
+            logger.exception("Vector search failed - degrading to BM25 keyword search")
+            fallback_map = {"products": COLLECTION_PRODUCTS, "recipes": COLLECTION_RECIPES}
+            fb_collection = fallback_map.get(collection, COLLECTION_KNOWLEDGE)
+            results = bm25_fallback.search(query, fb_collection, n_results)
+            degraded = True
 
         unique_sources = len(set(r["source"] for r in results))
-        self._send_json(200, {
+        payload = {
             "query": query,
             "results": results,
             "context": format_context(results),
             "total_results": len(results),
             "unique_sources": unique_sources,
-        })
+            "degraded": degraded,
+        }
+        if degraded:
+            payload["notice"] = ("Eingeschränkter Suchmodus: Vektorsuche nicht verfügbar, "
+                                 "Ergebnisse aus Keyword-Suche (BM25).")
+        self._send_json(200, payload)
 
     def _send_json(self, status: int, data: dict):
         """Send a JSON response."""
@@ -596,6 +640,9 @@ class RAGHandler(BaseHTTPRequestHandler):
 def run_server(host: str = "0.0.0.0", port: int = 8100):
     """Start the RAG API server."""
     server = ThreadingHTTPServer((host, port), RAGHandler)
+    # Warm the BM25 fallback index in the background so keyword search is
+    # ready if the embedding API goes down.
+    bm25_fallback.ensure_index_async()
     print(f"RAG API server listening on http://{host}:{port}", flush=True)
     print("Endpoints:", flush=True)
     print("  GET  /indexed     - Indexed files list (Dateimanager)", flush=True)
@@ -613,4 +660,5 @@ def run_server(host: str = "0.0.0.0", port: int = 8100):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     run_server()
