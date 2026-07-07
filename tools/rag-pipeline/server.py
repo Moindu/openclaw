@@ -20,6 +20,7 @@ from search import (
 from websearch import format_web_results, search_web
 from status_bridge import read_status
 import bm25_fallback
+import graph_api
 from rerank import rerank, RERANK_CANDIDATES, RERANK_ENABLED
 from config import COLLECTION_KNOWLEDGE, COLLECTION_PRODUCTS, COLLECTION_RECIPES
 
@@ -174,6 +175,25 @@ class RAGHandler(BaseHTTPRequestHandler):
 
         if path == "/status":
             self._handle_status()
+            return
+
+        if path.split("?")[0] == "/graph":
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            self._send_json(200, graph_api.graph_overview(
+                min_mentions=int(qs.get("min_mentions", ["1"])[0]),
+                limit=int(qs.get("limit", ["400"])[0]),
+            ))
+            return
+
+        if path.split("?")[0] == "/graph/entity":
+            from urllib.parse import parse_qs, urlparse
+            qs = parse_qs(urlparse(self.path).query)
+            name = (qs.get("name") or [""])[0]
+            if not name:
+                self._send_json(400, {"error": "name erforderlich"})
+                return
+            self._send_json(200, graph_api.entity_detail(name))
             return
 
         self.send_response(404)
