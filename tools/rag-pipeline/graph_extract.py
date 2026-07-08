@@ -10,6 +10,7 @@ Usage: graph_extract.py [--limit N] [--source NAME] [--status]
 import argparse
 import json
 import logging
+import os
 import re as _re
 import sqlite3
 import sys
@@ -27,8 +28,11 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("graph")
 
 DB_PATH = Path("/data/rag-graph/graph.db")
-GEN_MODEL = "gemini-3.1-flash-lite-preview"
-GEN_SLEEP = 5.0  # unter dem Free-Tier-Limit bleiben
+GEN_BACKEND = os.environ.get("GRAPH_LLM", "gemini")  # gemini | ollama
+GEN_MODEL = os.environ.get("GRAPH_GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.environ.get("GRAPH_OLLAMA_MODEL", "gemma4:12b-it-qat")
+GEN_SLEEP = 5.0 if GEN_BACKEND == "gemini" else 0.0  # Free-Tier-Drossel nur für die API
 
 ENTITY_TYPES = [
     "Ledertyp", "Gerbverfahren", "Gerbstoff", "Chemikalie", "Prozessschritt",
@@ -70,7 +74,24 @@ def _gen_client():
     return _client
 
 
+def _generate_ollama(prompt: str) -> str:
+    """Lokale Extraktion via Ollama (gemma4) - quota-unabhängig, offline-tauglich."""
+    import urllib.request
+    body = json.dumps({
+        "model": OLLAMA_MODEL, "prompt": prompt, "stream": False, "format": "json",
+        "options": {"temperature": 0.2, "num_ctx": 8192},
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        f"{OLLAMA_URL}/api/generate", data=body,
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=600) as resp:
+        return json.loads(resp.read().decode("utf-8")).get("response", "")
+
+
 def _generate(prompt: str, attempts: int = 5) -> str:
+    if GEN_BACKEND == "ollama":
+        return _generate_ollama(prompt)
     for attempt in range(attempts):
         try:
             resp = _gen_client().models.generate_content(model=GEN_MODEL, contents=prompt)
