@@ -1,0 +1,486 @@
+{
+  "label": "ctx-pilot",
+  "params": {
+    "n": 5,
+    "candidates": 20,
+    "collection": "knowledge_ctx"
+  },
+  "aggregate": {
+    "recall_at_1": 0.611,
+    "recall_at_5": 0.806,
+    "mrr": 0.701,
+    "queries": 36,
+    "duration_s": 243.1,
+    "collection": "knowledge_ctx"
+  },
+  "per_query": [
+    {
+      "id": 1,
+      "question": "Worauf sollte bei der Lagerung von OPTIMALIN OLI geachtet werden, um eine gleichbleibende Qualität vor der Verarbeitung sicherzustellen?",
+      "expected_source": "1_L_L_DE_4442_00_1_140-1.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_4442_00_1_140-1.pdf",
+        "1_L_L_DE_4442_00_1_140-1.pdf",
+        "1_L_L_DE_4442_70_1_140.pdf",
+        "1_L_P_DE_3797_41_2_140.pdf",
+        "1_L_L_DE_4446_00_1_140.pdf"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Wie muss PROVOL 100 vorbereitet werden, um es korrekt in Wasser zu lösen?",
+      "expected_source": "1_L_L_DE_2053_00_1_200-7.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_2053_00_1_200-7.pdf",
+        "1_L_L_DE_2053_00_1_200-7.pdf",
+        "manufactureoflea00davi.pdf",
+        "practical_tanning_1922.pdf",
+        "practical_tanning_1922.pdf"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Warum erreichen Gerbverfahren auf Basis von Zink oder Titan in der Regel keine so hohe thermische Beständigkeit wie klassische Methoden?",
+      "expected_source": "Current_trends_in_leather_science.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Current_trends_in_leather_science.pdf",
+        "Zeolites_as_sustainable_alternatives_to.pdf",
+        "Zeolites_as_sustainable_alternatives_to.pdf",
+        "Use_of_aluminium_alkoxide_and_oxazolidin.pdf",
+        "Use_of_aluminium_alkoxide_and_oxazolidin.pdf"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "Welches Datum ist bei der Rechnungsstellung durch die Gebr. Kobel GmbH als Leistungszeitpunkt anzusetzen?",
+      "expected_source": "ASL - G.Kobel - invoice R20260096.pdf",
+      "rank": 1,
+      "top_sources": [
+        "ASL - G.Kobel - invoice R20260096.pdf",
+        "ASL - G.Kobel - invoice R20260096.pdf",
+        "ASL - G.Kobel - invoice R20240368.pdf",
+        "ASL - G.Kobel - invoice R20230229.pdf",
+        "ASL - G.Kobel - invoice R20220434.pdf"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Unter welcher Zolltarifnummer wird das Produkt Avacor dunkelbraun für den Versand deklariert?",
+      "expected_source": "ASL - G.Kobel - delivery note L20260013.pdf",
+      "rank": null,
+      "top_sources": [
+        "Material_2026-05-12_avellis-synco-leather-gmbh-aktuelle-avacor-produktpreise.md",
+        "Material_2026-05-12_avellis-synco-leather-gmbh-aktuelle-avacor-produktpreise_1.md",
+        "diegerbundfarbst00mier.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "1977censusofmanu03unit.pdf"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "In welchen Phasen der Lederherstellung lässt sich das Hilfsmittel NOVALTAN DPA einsetzen, um eine dispergierende Wirkung zu erzielen?",
+      "expected_source": "1_L_L_DE_4849_00_1_120.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_4849_00_1_120.pdf",
+        "1_L_L_DE_4849_00_1_120.pdf",
+        "1_L_L_DE_2426_20_1_120.pdf",
+        "1_L_L_DE_2426_20_1_120.pdf",
+        "1_L_L_DE_4457_40_2_120.pdf"
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Welche Maßnahmen müssen bei der Lagerung von CONTRIPON ODN beachtet werden, um eine gleichbleibende Produktqualität vor der Verarbeitung sicherzustellen?",
+      "expected_source": "1_L_L_DE_4413_20_1_260-1.pdf",
+      "rank": 2,
+      "top_sources": [
+        "1_L_L_DE_4413_20_1_260.pdf",
+        "1_L_L_DE_4413_20_1_260-1.pdf",
+        "1_L_L_DE_4413_20_1_260-1.pdf",
+        "1_L_P_DE_4194_60_2_260.pdf",
+        "1_L_L_DE_4507_00_1_260.pdf"
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Wie hat sich die Effizienz bei der Aufbereitung von Salpeter für die Pulverherstellung durch neue technische Verfahren im Vergleich zu früheren Methoden verändert?",
+      "expected_source": "rapportfaitaunom00four.pdf",
+      "rank": null,
+      "top_sources": [
+        "Rheinland_Pfalzische_Wirtschaftsgeschich.pdf",
+        "practical_tanning_1922.pdf",
+        "leathermanufactu00schurich.pdf",
+        "leathermanufactu00schurich.pdf",
+        "newcompletetreat00duss_0.pdf"
+      ]
+    },
+    {
+      "id": 9,
+      "question": "Wie lässt sich das Produkt PELLASTOL SFL fachgerecht in Wasser lösen, um eine stabile Emulsion für die Lederbearbeitung zu erhalten?",
+      "expected_source": "1_L_L_DE_4112_00_1_160-6.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_4112_00_1_160-6.pdf",
+        "1_L_L_DE_4112_00_1_160-6.pdf",
+        "1_L_L_DE_4982_10_1_160-2.pdf",
+        "1_L_L_DE_5040_00_1_160.pdf",
+        "1_L_L_DE_1905_00_1_160.pdf"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Welchen Einfluss hat die spezifische Abfolge der Aminosäuren auf die verschiedenen Prozesse bei der Herstellung von Leder aus Tierhäuten?",
+      "expected_source": "Tanning_Chemistry_The_Science_of_Leather.pdf",
+      "rank": 2,
+      "top_sources": [
+        "TARA_Caesalpinia_spinosa_the_sustainable.pdf",
+        "Tanning_Chemistry_The_Science_of_Leather.pdf",
+        "TARA_Caesalpinia_spinosa_the_sustainable.pdf",
+        "Tanning_Chemistry_The_Science_of_Leather.pdf",
+        "manufactureoflea00benn.pdf"
+      ]
+    },
+    {
+      "id": 11,
+      "question": "Welche Maßnahmen bei der Lagerung sind notwendig, um die Bildung von Ablagerungen in NOVALTAN AG zu verhindern und die Haltbarkeit des Gerbstoffs zu gewährleisten?",
+      "expected_source": "1_L_L_DE_2426_20_1_120.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_2426_20_1_120.pdf",
+        "1_L_L_DE_2426_20_1_120.pdf",
+        "1_L_L_DE_3911_00_1_120.pdf",
+        "1_L_L_DE_3352_10_1_120.pdf",
+        "1_L_L_DE_5176_00_1_120.pdf"
+      ]
+    },
+    {
+      "id": 12,
+      "question": "An wen kann ich mich wenden, wenn ich technische Informationen oder Unterstützung zu dem hydrophobierenden Fettungsmittel Ombrellon WP benötige?",
+      "expected_source": "1_L_L_DE_2293_80_1_170.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_2293_80_1_170.pdf",
+        "1_L_L_DE_2293_80_1_170.pdf",
+        "1_L_P_DE_2678_50_2_170.pdf",
+        "1_L_L_DE_4454_10_1_170.pdf",
+        "1_L_L_DE_3700_40_1_170.pdf"
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Welche Eigenschaften weist das Mittel Supralan TY bei der Reinigung und Aufbereitung von Rohhäuten auf und worauf sollte bei der Lagerung des Produkts geachtet werden?",
+      "expected_source": "1_L_L_DE_4218_00_1_110.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_4218_00_1_110.pdf",
+        "1_L_L_DE_4218_00_1_110.pdf",
+        "1_L_L_DE_2209_10_1_110.pdf",
+        "1_L_L_DE_2641_30_1_110.pdf",
+        "1_L_P_DE_4183_10_2_110.pdf"
+      ]
+    },
+    {
+      "id": 14,
+      "question": "An wen kann ich mich bei der Gebr. Kobel GmbH wenden, wenn ich Rückfragen zu einer aktuellen Warenlieferung habe?",
+      "expected_source": "ASL - G.Kobel - delivery note L20240406.pdf",
+      "rank": null,
+      "top_sources": [
+        "Quellen_zur_Alltagsgeschichte_Backnangs.pdf",
+        "Quellen_zur_Alltagsgeschichte_Backnangs.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf"
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Welche Lieferbedingungen gelten für den Versand der Lederwaren von Avellis Synco Leather an die Gebr. Kobel GmbH?",
+      "expected_source": "ASL - G.Kobel - invoice R20220338.pdf",
+      "rank": null,
+      "top_sources": [
+        "ASL - G.Kobel - delivery note L20260102.pdf",
+        "ASL - G.Kobel - delivery note L20260103.pdf",
+        "ASL - G.Kobel - delivery note L20250288.pdf",
+        "ASL - G.Kobel - delivery note L20220372.pdf",
+        "ASL - G.Kobel - delivery note L20220226.pdf"
+      ]
+    },
+    {
+      "id": 16,
+      "question": "Wie kann man die natürliche Härte von eisengegerbtem Leder durch eine Nachbehandlung geschmeidiger machen?",
+      "expected_source": "irontannage00hout.pdf",
+      "rank": null,
+      "top_sources": [
+        "practical_tanning_1922.pdf",
+        "manufactureoflea00benn.pdf",
+        "Joh.-J.-Dargel--Das-Einmaleins-der-Lederherstellung.pdf",
+        "practicaltanning00flemuoft.pdf",
+        "hometanning230frey.pdf"
+      ]
+    },
+    {
+      "id": 17,
+      "question": "Welches Mittel eignet sich für eine umweltfreundliche und effiziente Entfettung von Rohhäuten mit hohem Eigenfettgehalt, ohne dass dabei zusätzliche organische Lösungsmittel benötigt werden?",
+      "expected_source": "1_L_L_DE_2209_10_1_110.pdf",
+      "rank": 2,
+      "top_sources": [
+        "1_L_L_DE_2489_20_1_110.pdf",
+        "1_L_L_DE_2209_10_1_110.pdf",
+        "1_L_L_DE_2641_30_1_110.pdf",
+        "1_L_L_DE_4218_00_1_110.pdf",
+        "1_L_L_DE_2209_10_1_110.pdf"
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Welche Verfahren oder Methoden existieren, um bei der Lederherstellung anfallenden Klärschlamm sicher zu verfestigen oder zu stabilisieren?",
+      "expected_source": "Sustainable_use_of_tannery_sludge_in_bri.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Sustainable_use_of_tannery_sludge_in_bri.pdf",
+        "Sustainable_use_of_tannery_sludge_in_bri.pdf",
+        "practical_tanning_1922.pdf",
+        "practical_tanning_1922.pdf",
+        "environmentalfea00bateuoft.pdf"
+      ]
+    },
+    {
+      "id": 21,
+      "question": "Unter welcher Anschrift ist die Synco Leather GmbH in Wiesbaden für geschäftliche Korrespondenz oder Lieferungen erreichbar?",
+      "expected_source": "ASL - G.Kobel - delivery note L20250287.pdf",
+      "rank": null,
+      "top_sources": [
+        "ASL - G.Kobel - invoice R20220338.pdf",
+        "ASL - G.Kobel - invoice R20220434.pdf",
+        "ASL - G.Kobel - invoice R20260012.pdf",
+        "ASL - G.Kobel - invoice R20230229.pdf",
+        "ASL - G.Kobel - invoice R20250262.pdf"
+      ]
+    },
+    {
+      "id": 22,
+      "question": "Wie lässt sich der fortschreitende Zerfall von historischem Leder, das durch Säureeinwirkung geschädigt wurde, wirksam aufhalten und langfristig konservieren?",
+      "expected_source": "Use_of_aluminium_alkoxide_and_oxazolidin.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Use_of_aluminium_alkoxide_and_oxazolidin.pdf",
+        "Use_of_aluminium_alkoxide_and_oxazolidin.pdf",
+        "Development_of_a_novel_method_to_reduce.pdf",
+        "Development_of_a_novel_method_to_reduce.pdf",
+        "An_Experimental_Comparative_Study_on_Sil.pdf"
+      ]
+    },
+    {
+      "id": 23,
+      "question": "Anhand welcher spezifischen Merkmale lässt sich archäologisch feststellen, ob an einem Fundort früher eine Werkstatt für die Verarbeitung von Bein oder Geweih existiert hat?",
+      "expected_source": "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf",
+        "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf",
+        "Zwischen_Birsig_und_Petersberg.pdf",
+        "Archaologische_Untersuchungen_in_Freiber.pdf",
+        "Der_Gebrauch_von_Schaffell_in_der_mittel.pdf"
+      ]
+    },
+    {
+      "id": 24,
+      "question": "Waren bei antiken Ledersandalen die verwendeten Einfassungen der Ränder farblich immer vom restlichen Material abgesetzt oder kamen auch einfarbige Varianten vor?",
+      "expected_source": "12_Veldmeijer_JARCE45_pdf.pdf",
+      "rank": 2,
+      "top_sources": [
+        "bootshoemanufact00rich.pdf",
+        "12_Veldmeijer_JARCE45_pdf.pdf",
+        "Flocks_and_herds_animal_skin_and_hide_ex.pdf",
+        "leathermanufactu00wattrich.pdf",
+        "12_Veldmeijer_JARCE45_pdf.pdf"
+      ]
+    },
+    {
+      "id": 25,
+      "question": "Welche Besonderheiten bei der Lagerung und Vorbereitung müssen bei der Verwendung von CUIROL LC beachtet werden, um eine optimale Produktqualität zu gewährleisten?",
+      "expected_source": "1_L_L_DE_5234_00_1_180-1.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_5234_00_1_180-1.pdf",
+        "1_L_L_DE_5234_00_1_180-1.pdf",
+        "manufactureoflea00davi.pdf",
+        "practicaltanning00flemuoft.pdf",
+        "diegerbundfarbst00mier.pdf"
+      ]
+    },
+    {
+      "id": 26,
+      "question": "Auf welche Weise bewirkt Glutardialdehyd (GTA) eine Vernetzung der Kollagenmoleküle innerhalb des Leders?",
+      "expected_source": "Influence_of_crosslinkers_and_crosslinki.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Influence_of_crosslinkers_and_crosslinki.pdf",
+        "TARA_Caesalpinia_spinosa_the_sustainable.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "TARA_Caesalpinia_spinosa_the_sustainable.pdf"
+      ]
+    },
+    {
+      "id": 27,
+      "question": "Worauf sollte man bei der Auswahl eines Nachgerbstoffs achten, wenn man bei der Lederherstellung vollständig auf Bisphenole verzichten möchte?",
+      "expected_source": "1_L_L_DE_5176_00_1_120.pdf",
+      "rank": 4,
+      "top_sources": [
+        "1_L_L_DE_5174_00_1_240.pdf",
+        "1_L_L_DE_5173_00_1_240.pdf",
+        "1_L_L_DE_5240_60_1_120.pdf",
+        "1_L_L_DE_5176_00_1_120.pdf",
+        "Current_trends_in_leather_science.pdf"
+      ]
+    },
+    {
+      "id": 28,
+      "question": "Wie hoch ist das Gesamtgewicht der gelieferten Farbstoffe in der aktuellen Sendung?",
+      "expected_source": "ASL - G.Kobel - delivery note L20230227.pdf",
+      "rank": 2,
+      "top_sources": [
+        "ASL - G.Kobel - delivery note L20220483.pdf",
+        "ASL - G.Kobel - delivery note L20230227.pdf",
+        "Täschnerhälften auf Borke 16.3.26.pdf",
+        "ASL - G.Kobel - delivery note L20220226.pdf",
+        "ASL - G.Kobel - delivery note L20250287.pdf"
+      ]
+    },
+    {
+      "id": 29,
+      "question": "Warum unterschätzten die etablierten Unternehmen der Natureisindustrie die aufkommenden technischen Innovationen zur künstlichen Eiserzeugung?",
+      "expected_source": "In_the_beginning_was_the_network.pdf",
+      "rank": 1,
+      "top_sources": [
+        "In_the_beginning_was_the_network.pdf",
+        "In_the_beginning_was_the_network.pdf",
+        "Rheinland_Pfalzische_Wirtschaftsgeschich.pdf",
+        "Rheinland_Pfalzische_Wirtschaftsgeschich.pdf",
+        "Wandel_der_Industriegesellschaft_am_Bei.pdf"
+      ]
+    },
+    {
+      "id": 30,
+      "question": "Welche drei zentralen Kriterien müssen bei einer verantwortungsbewussten Unternehmensführung im Hinblick auf den Ressourcenverbrauch berücksichtigt werden?",
+      "expected_source": "Nachhaltigkeitsmanagement_uber_Werktore.pdf",
+      "rank": null,
+      "top_sources": [
+        "TARA_Caesalpinia_spinosa_the_sustainable.pdf",
+        "Sustainability_research_in_the_leather_i.pdf",
+        "Corporate_Sustainability_Disclosure_A_Le.pdf",
+        "Sustainability_research_in_the_leather_i.pdf",
+        "Journal_of_the_Society_of_Leather_Techno.pdf"
+      ]
+    },
+    {
+      "id": 31,
+      "question": "Welche chemischen Substanzen müssen bei der Verarbeitung von CUIROL S-LL vermieden werden, da das Fettungsmittel gegenüber diesen nicht beständig ist?",
+      "expected_source": "1_L_L_DE_4246_90_2_180.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_4246_90_2_180.pdf",
+        "1_L_L_DE_4246_90_2_180.pdf",
+        "1_L_L_DE_5234_00_1_180-1.pdf",
+        "1_L_L_DE_5234_00_1_180-1.pdf",
+        "1_L_L_DE_4246_00_1_180-1.pdf"
+      ]
+    },
+    {
+      "id": 32,
+      "question": "Welche Informationen lassen sich aus archäologischen Kleinfunden von Lederstücken für die historische Forschung gewinnen?",
+      "expected_source": "Leather_Military_Garments_and_other_leat.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Leather_Military_Garments_and_other_leat.pdf",
+        "Der_Gebrauch_von_Schaffell_in_der_mittel.pdf",
+        "Flocks_and_herds_animal_skin_and_hide_ex.pdf",
+        "Flocks_and_herds_animal_skin_and_hide_ex.pdf",
+        "Leather_Military_Garments_and_other_leat.pdf"
+      ]
+    },
+    {
+      "id": 33,
+      "question": "Welche Faktoren beeinflussen das Flächenergebnis bei der Herstellung von weichem Bekleidungsleder während des Trocknungsprozesses?",
+      "expected_source": "Investigating_the_cell_rotary_conditioni.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Investigating_the_cell_rotary_conditioni.pdf",
+        "Investigating_the_cell_rotary_conditioni.pdf",
+        "chemistryofleath00wils.pdf",
+        "leathermanufactu00wattrich.pdf",
+        "leathermanufactu00wattrich.pdf"
+      ]
+    },
+    {
+      "id": 34,
+      "question": "Warum bevorzugen Gerbereien bei der Beschaffung von Sumach für die Lederherstellung den Import aus Sizilien gegenüber heimischen Produkten?",
+      "expected_source": "CAT87211157.pdf",
+      "rank": 1,
+      "top_sources": [
+        "CAT87211157.pdf",
+        "leathermanufactu00wattrich.pdf",
+        "manufactureoflea00davi_0.pdf",
+        "newcompletetreat00duss_0.pdf",
+        "manufactureoflea00benn.pdf"
+      ]
+    },
+    {
+      "id": 35,
+      "question": "Welche chemischen Substanzen oder Hilfsmittel können die Wirksamkeit von Pellamin CL bei der Lederfettung negativ beeinflussen?",
+      "expected_source": "1_L_L_DE_2555_00_1_220-4.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_2555_00_1_220-4.pdf",
+        "1_L_L_DE_2555_00_1_220-4.pdf",
+        "diegerbundfarbst00mier.pdf",
+        "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf",
+        "1_L_L_DE_4797_00_1_150.pdf"
+      ]
+    },
+    {
+      "id": 36,
+      "question": "Welche archäologischen Funde aus der Basler Ausgrabung der 1930er Jahre sind für die Lederforschung von besonderer Bedeutung?",
+      "expected_source": "Zwischen_Birsig_und_Petersberg.pdf",
+      "rank": 2,
+      "top_sources": [
+        "ROMAN_INSCRIBED_LEATHER_Pelles_scriptae.pdf",
+        "Zwischen_Birsig_und_Petersberg.pdf",
+        "Falsche_Abschreckbecken_und_echte_Gerber.pdf",
+        "Zwischen_Birsig_und_Petersberg.pdf",
+        "Das_romerzeitliche_Handwerk_in_der_Schwe.pdf"
+      ]
+    },
+    {
+      "id": 39,
+      "question": "Über welche fachliche Qualifikation und wissenschaftlichen Schwerpunkte sollte ein Experte für die Konservierung historischer Artefakte und Materialien typischerweise verfügen?",
+      "expected_source": "Microscopic_observations_to_track_the_be.pdf",
+      "rank": 1,
+      "top_sources": [
+        "Microscopic_observations_to_track_the_be.pdf",
+        "Microscopic_observations_to_track_the_be.pdf",
+        "A_review_of_the_long_term_use_of_cyclodo.pdf",
+        "Tell_el_Amarna_autumn_2017_and_spring_20.pdf",
+        "Archaeological_block_lifting_with_volati.pdf"
+      ]
+    },
+    {
+      "id": 40,
+      "question": "Mit welchen Gerbstoffen oder chemischen Zusätzen ist der Polymergerbstoff NOVALTAN MSA nicht kompatibel?",
+      "expected_source": "1_L_L_DE_3911_00_1_120.pdf",
+      "rank": 1,
+      "top_sources": [
+        "1_L_L_DE_3911_00_1_120.pdf",
+        "1_L_L_DE_3911_00_1_120.pdf",
+        "1_L_L_DE_1568_00_1_120.pdf",
+        "1_L_L_DE_4116_10_1_120.pdf",
+        "1_L_L_DE_5240_60_1_120.pdf"
+      ]
+    }
+  ]
+}
